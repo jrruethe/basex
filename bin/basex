@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require "ostruct"
+
+require "basex"
+
+options = OpenStruct.new
+positional = OptionParser.new do |opts|
+  opts.banner = "Usage: basex <-t TYPE> [-d] [file]"
+
+  opts.on("-d", "--decode"){options.decode = true}
+  opts.on("-t", "--type TYPE"){|i| options.type = i.to_sym}
+
+  opts.separator <<~EOF
+  Supported types:
+  base32
+  base41
+  base64
+  base85
+  EOF
+
+end.parse!
+
+abort("Must specify a type") unless options.type
+begin
+  require "basex/#{options.type}"
+  type = BaseX::const_get(options.type.capitalize)
+rescue LoadError
+  abort("Unsupported type: #{options.type}")
+end
+
+if options.decode
+  string = ARGF.read
+  data = type.decode(string)
+  print data
+else
+  data = ARGF.read
+  string = type.encode(data)
+  print string
+end

@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require "ostruct"
+
+require "basex/base41"
+
+options = OpenStruct.new
+positional = OptionParser.new do |opts|
+  opts.banner = "Usage: base41 [-d] [file]"
+  opts.on("-d", "--decode"){options.decode = true}
+end.parse!
+
+if options.decode
+  string = ARGF.read
+  data = BaseX::Base41.decode(string)
+  print data
+else
+  data = ARGF.read
+  string = BaseX::Base41.encode(data)
+  print string
+end
