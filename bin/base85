@@ -12,11 +12,11 @@ positional = OptionParser.new do |opts|
 end.parse!
 
 if options.decode
-  string = ARGF.read
+  string = ARGF.read.force_encoding(Encoding::ASCII_8BIT)
   data = BaseX::Base85.decode(string)
   print data
 else
-  data = ARGF.read
+  data = ARGF.read.force_encoding(Encoding::ASCII_8BIT)
   string = BaseX::Base85.encode(data)
   print string
 end

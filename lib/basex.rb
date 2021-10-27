@@ -19,7 +19,7 @@ module BaseX
       @input_symbol_table  = input_symbol_table
       @output_base         = output_base
       @output_ratio        = output_ratio
-      @output_symbol_table = output_symbol_table.split("")
+      @output_symbol_table = output_symbol_table.chars
       @padding_symbol      = padding_symbol
 
       @padded_input_symbol_table   = @input_symbol_table + [@padding_symbol]
@@ -35,7 +35,7 @@ module BaseX
     end
 
     def encode(input_data)
-      input_data = input_data.split("").map{|i| @input_symbol_table.index(i)}
+      input_data = input_data.chars.map{|i| @input_symbol_table.index(i)}
       raise "Error" if input_data.any?(nil)
       output_data = encode_raw(
         input_data: input_data,
@@ -48,7 +48,7 @@ module BaseX
     end
 
     def decode(input_data)
-      input_data = input_data.chomp.split("").map{|i| @padded_output_symbol_table.index(i)}
+      input_data = input_data.chomp.chars.map{|i| @padded_output_symbol_table.index(i)}
       raise "Error" if input_data.any?(nil)
       padding_length = input_data.count(@output_base)
       input_data.map!{|s| s != @output_base ? s : @output_base - 1}

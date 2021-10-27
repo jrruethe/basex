@@ -31,11 +31,11 @@ rescue LoadError
 end
 
 if options.decode
-  string = ARGF.read
+  string = ARGF.read.force_encoding(Encoding::ASCII_8BIT)
   data = type.decode(string)
   print data
 else
-  data = ARGF.read
+  data = ARGF.read.force_encoding(Encoding::ASCII_8BIT)
   string = type.encode(data)
   print string
 end
