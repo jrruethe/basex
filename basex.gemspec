@@ -17,9 +17,10 @@ Gem::Specification.new do |spec|
   spec.executables =
   [
     "basex",
-    "base32",
+    #"base32",
+    "bocr32",
     "base41",
-    "base64",
+    #"base64",
     "base85"
   ]
 

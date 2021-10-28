@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require "ostruct"
+
+require "basex/bocr32"
+
+options = OpenStruct.new
+positional = OptionParser.new do |opts|
+  opts.banner = "Usage: bocr32 [-d] [file]"
+  opts.on("-d", "--decode"){options.decode = true}
+end.parse!
+
+if options.decode
+  string = ARGF.read.force_encoding(Encoding::ASCII_8BIT)
+  data = BaseX::Bocr32.decode(string)
+  print data
+else
+  data = ARGF.read.force_encoding(Encoding::ASCII_8BIT)
+  string = BaseX::Bocr32.encode(data)
+  print string
+end
